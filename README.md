@@ -6,4 +6,4 @@ Click the following links for more information:
 * Mining Nimiq (NIM): https://azurecloudminingscript.github.io/Turn_your_Azure_Free_Credits_into_NIMIQ.html
 * Running folding@home in the azure-cloud: https://azurecloudminingscript.github.io/Run_Folding_At_Home_in_the_Azure_Cloud.html
 
-
+Edited version of the script, with xmrstak updated, and no donations.
