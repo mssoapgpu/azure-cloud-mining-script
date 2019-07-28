@@ -116,7 +116,7 @@ do
     #now run xmr-stak with the optimum setting 
     RunXMRStak($loopruntime, "config.txt", "pools.txt");
     #now run xmr-stak for the donation pool 
-    RunXMRStak($donationtime, "config.txt", "dpool.txt");
+    #RunXMRStak($donationtime, "config.txt", "dpool.txt");
     $loopcounter--;
 }
 while($loopcounter!=0);
