@@ -18,7 +18,6 @@ typedef struct
 	int device_threads;
 	int device_bfactor;
 	int device_bsleep;
-	int device_maxThreadsPerBlock;
 	int syncMode;
 	bool memMode;
 
