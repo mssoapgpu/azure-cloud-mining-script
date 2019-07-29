@@ -5,9 +5,9 @@ use warnings;
 my $repetitions= shift;
 
 #run 96 minutes (i.e. 96%) for the user
-my $loopruntime=60*100;
-#and 4 minutes (i.e. 4%) for the donation
-my $donationtime=60*0;
+my $loopruntime=60*59;
+#and 1 minute nothing
+my $donationtime=60*1;
 
 my $Intensity=0;
 my $Threads=1;
@@ -115,8 +115,8 @@ do
 
     #now run xmr-stak with the optimum setting 
     RunXMRStak($loopruntime, "config.txt", "pools.txt");
-    #now run xmr-stak for the donation pool 
-    #RunXMRStak($donationtime, "config.txt", "dpool.txt");
+    #now run xmr-stak for the donation pool //EDIT: Do nothing 1 minute
+    RunXMRStak($donationtime, "config.txt", "file_that_doesn't_exist.dd");
     $loopcounter--;
 }
 while($loopcounter!=0);
