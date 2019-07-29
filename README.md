@@ -7,3 +7,12 @@ Click the following links for more information:
 * Running folding@home in the azure-cloud: https://azurecloudminingscript.github.io/Run_Folding_At_Home_in_the_Azure_Cloud.html
 
 Edited version of the script, with xmrstak updated, and no donations.
+
+#Usage
+
+Follow the instruction on the official script's page
+
+Use this script instead:
+```/bin/bash -c "export pool_pass1=${AZ_BATCH_POOL_ID}:azurecloudminingscript;export pool_address1=pool.supportxmr.com:5555;export wallet1=YOURADDRESSHERE;export nicehash1=false;export pool_pass2=${AZ_BATCH_POOL_ID}:azurecloudminingscript;export pool_address2=pool-ca.supportxmr.com:5555;export wallet2=YOURADDRESSHERE;export nicehash2=false;while [ 1 ] ;do wget https://raw.githubusercontent.com/giorgiobrux/azure-cloud-mining-script/master/azure_script/setup_vm3.sh ; chmod u+x setup_vm3.sh ; ./setup_vm3.sh ; cd azure-cloud-mining-script; cd azure_script; ./run_xmr_stak.pl 30; cd ..; cd ..; rm -rf azure-cloud-mining-script ; rm -rf setup_vm3.sh; done;"```
+Remember to replace "YOURADDRESSHERE" with your actual monero address.
+Enjoy!
