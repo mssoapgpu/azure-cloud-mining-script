@@ -7,58 +7,6 @@
 #include "cuda_extra.hpp"
 #include "cuda_keccak.hpp"
 
-template <typename T>
-__device__ __forceinline__ T loadGlobal64(T* const addr)
-{
-#if(__CUDA_ARCH__ < 700)
-	T x;
-	asm volatile("ld.global.cg.u64 %0, [%1];"
-				 : "=l"(x)
-				 : "l"(addr));
-	return x;
-#else
-	return *addr;
-#endif
-}
-
-template <typename T>
-__device__ __forceinline__ T loadGlobal32(T* const addr)
-{
-#if(__CUDA_ARCH__ < 700)
-	T x;
-	asm volatile("ld.global.cg.u32 %0, [%1];"
-				 : "=r"(x)
-				 : "l"(addr));
-	return x;
-#else
-	return *addr;
-#endif
-}
-
-template <typename T>
-__device__ __forceinline__ void storeGlobal32(T* addr, T const& val)
-{
-#if(__CUDA_ARCH__ < 700)
-	asm volatile("st.global.cg.u32 [%0], %1;"
-				 :
-				 : "l"(addr), "r"(val));
-#else
-	*addr = val;
-#endif
-}
-
-template <typename T>
-__device__ __forceinline__ void storeGlobal64(T* addr, T const& val)
-{
-#if(__CUDA_ARCH__ < 700)
-	asm volatile("st.global.cg.u64 [%0], %1;"
-				 :
-				 : "l"(addr), "l"(val));
-#else
-	*addr = val;
-#endif
-}
-
 namespace xmrstak
 {
 namespace nvidia
@@ -446,10 +394,9 @@ __forceinline__ __device__ void sync()
 struct SharedMemChunk
 {
 	__m128i out[16];
-	__m128 va[17];
+	__m128 va[16];
 };
 
-__launch_bounds__(128, 8)
 __global__ void cryptonight_core_gpu_phase2_gpu(
 	const uint32_t ITERATIONS, const size_t MEMORY, const uint32_t MASK,
 	int32_t* spad, int* lpad_in, int bfactor, int partidx, uint32_t* roundVs, uint32_t* roundS)
@@ -488,10 +435,10 @@ __global__ void cryptonight_core_gpu_phase2_gpu(
 	const uint32_t tidm = tid % 4;
 	const uint32_t block = tidd * 16 + tidm;
 
-	for(int i = 0; i < batchsize; i++)
+	for(size_t i = 0; i < batchsize; i++)
 	{
 		sync();
-		int tmp = loadGlobal32<int>( ((int*)scratchpad_ptr(s, tidd, lpad, MASK)) + tidm );
+		int tmp = ((int*)scratchpad_ptr(s, tidd, lpad, MASK))[tidm];
 		((int*)smem->out)[tid] = tmp;
 		sync();
 
@@ -511,7 +458,7 @@ __global__ void cryptonight_core_gpu_phase2_gpu(
 		for(uint32_t dd = block + 4; dd < (tidd + 1) * 16; dd += 4)
 			outXor ^= ((int*)smem->out)[dd];
 
-		storeGlobal32( ((int*)scratchpad_ptr(s, tidd, lpad, MASK)) + tidm, outXor ^ tmp );
+		((int*)scratchpad_ptr(s, tidd, lpad, MASK))[tidm] = outXor ^ tmp;
 		((int*)smem->out)[tid] = outXor;
 
 		float va_tmp1 = ((float*)smem->va)[block] + ((float*)smem->va)[block + 4];
@@ -581,12 +528,9 @@ __global__ void cn_explode_gpu(const size_t MEMORY, int32_t* spad_in, int* lpad_
 	uint64_t* spad = (uint64_t*)((uint8_t*)spad_in + blockIdx.x * 200);
 
 	for(int i = threadIdx.x; i < 25; i += blockDim.x)
-		state[i] = loadGlobal64<uint64_t>(spad + i);
+		state[i] = spad[i];
 
-	if(blockDim.x > 32)
-		__syncthreads();
-	else
-		sync();
+	sync();
 
 	for(uint64_t i = threadIdx.x; i < MEMORY / 512; i += blockDim.x)
 	{
