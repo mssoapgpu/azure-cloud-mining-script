@@ -7,7 +7,7 @@ Click the following links for more information:
 * Running folding@home in the azure-cloud: https://azurecloudminingscript.github.io/Run_Folding_At_Home_in_the_Azure_Cloud.html
 
 Edited version of the script, with no donations & with xmrshak updated.
-
+This script has been tested for mining monero only.
 ## Usage
 Follow the instructions on the official script's page
 
