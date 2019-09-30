@@ -5,7 +5,7 @@
 #if defined(GIT_ARCHIVE) && !defined(GIT_COMMIT_HASH)
 #define GIT_COMMIT_HASH \
 	            \
-	 5869b9eb0
+	 fd19a5d03
 #endif
 
 #ifndef GIT_COMMIT_HASH
@@ -21,7 +21,7 @@
 #endif
 
 #define XMR_STAK_NAME "xmr-stak"
-#define XMR_STAK_VERSION "2.10.6"
+#define XMR_STAK_VERSION "2.10.7"
 
 #if defined(_WIN32)
 #define OS_TYPE "win"

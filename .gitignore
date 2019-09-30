@@ -30,3 +30,5 @@ cmake-build-debug/
 
 # Thumbnails
 ._*
+#Ignore this, will remove asasp
+azure_script/new 2.txt
