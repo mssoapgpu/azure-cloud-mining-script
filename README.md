@@ -18,6 +18,6 @@ Remember to replace "YOURADDRESSHERE" with your actual monero address.
 Enjoy!
 
 ## Useful info
-Current xmr-stak version: 2.10.7
+Always uses latest xmrig
 Don't use with Azure education or they will limit your account and/or stop your vms.
 If you really want to use it, use a low number of machines. 
