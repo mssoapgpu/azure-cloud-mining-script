@@ -294,10 +294,10 @@ sub CreateDonationConfig{
     $configstring.= CreatePoolSection(1);
     $configstring.= '}';
 
-    my $filename = 'donationconfig.json';
-    open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
-    print $fh $configstring;
-    close $fh;
+    #my $filename = 'donationconfig.json';
+    #open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
+    #print $fh $configstring;
+    #close $fh;
 }
 
 
