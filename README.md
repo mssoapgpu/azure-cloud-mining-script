@@ -16,4 +16,4 @@ Always uses latest xmrig
 Don't use with Azure education or they will limit your account and/or stop your vms.
 If you really want to use it, use a low number of machines. 
 
-Thanks to Giorgio and the other guys and gals
+Thanks to Giorgio and the other guys and gals...
